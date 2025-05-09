@@ -1,6 +1,6 @@
 import express, { response } from "express"
 import cors from "cors"
-import fs from "node:fs"
+import {promises as fs} from "node:fs"
 
 const app = express()
 const DATABASE_URL = "./database/motorista.json"
@@ -30,37 +30,45 @@ app.get("/motorista", async (res, req) => {
 app.post("/motorista", async (res, req) => {
     const {nome, dataNascimento, numeroCart} = req.body;
 
-    if(!nome || typeof nome !== "string" || nome.trim() === ""){
-        res.status(400).json({message:"O nome é obrigatório e deve ser em texto!!!"})
+    if(!nome){
+        res.status(404).json({message:"O nome é obrigatório e deve ser em texto!!!"})
         return;
     }
-    if(!dataNascimento || typeof dataNascimento !== "string" || dataNascimento.trim() === ""){
-        res.status().json({message:"A data de nascimento é obrigatório e deve ser em texto!!"})
+    if(!dataNascimento ){
+        res.status(404).json({message:"A data de nascimento é obrigatório e deve ser em texto!!"})
         return;
     }
-    if(!numeroCart || typeof numeroCart !== "string" || numeroCart.trim() === ""){
-        res.status().json({message:"O número da carteira de habilitação e deve ser em texto!"})
+    if(!numeroCart){
+        res.status(404).json({message:"O número da carteira de habilitação e deve ser em texto!"})
         return;
     }
+    const novoMotorista = {
+            id_motorista: Date.now().toString(),
+            nome,
+            dataNascimento,
+            numeroCart,
+            id_onibus: 0,
+        };
+        
     try{
-            const novoMotorista = {
-                id: Date.now().toString(),
-                nome,
-                dataNascimento,
-                numeroCart
-            }
-            
-            motorista.push(novoMotorista);
+        const data = await fs.readFile(DATABASE_URL, 'utf-8')
+        const motorista = await JSON.parse(data)
+
+            motorista.motoristas.push(novoMotorista)
+
             await fs.writeFile(DATABASE_URL, JSON.stringify(motorista, null, 2))
+
+            res.status(201).json({message:"Motorista cadastrado!"})
+
         }catch(err){
             console.log(err)
             res.status(500).json({message:"Internal server error"})
         }
-})
+});
 //ÔNIBUS
 app.get("/onibus", async (res, req) => {
     try{ 
-        const data = await fs.readFile(DATABASE_URL2, 'utf-8')
+        const data = await fs.readFile(DATABASE_URL, 'utf-8')
         const onibus = JSON.parse(data)
         if(onibus.length === 0){
             res.status(200).json({message:"Não possui nenhum ônibus!!!"})
@@ -91,6 +99,9 @@ app.post("/onibus", async (res, req) => {
         return;
     }
     try{
+        const data = await fs.readFile(DATABASE_URL, 'utf-8')
+        const onibusX = JSON.parse(data)
+
             const onibus = {
                 id: Date.now().toString(),
              placa,
@@ -99,8 +110,9 @@ app.post("/onibus", async (res, req) => {
              capacidade
             }
             
-            onibus2.push(onibus);
-            await fs.writeFile(DATABASE_URL, JSON.stringify(onibus2, null, 2))
+            onibusX.onibus.push(onibus);
+            await fs.writeFile(DATABASE_URL, JSON.stringify(onibusX, null, 2))
+            res.status(200).json({message:"Ônibus cadastrado!"})
         }catch(err){
             console.log(err)
             res.status(500).json({message:"Internal server error"})

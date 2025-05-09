@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1746209075310",
+    "name": "Elloar",
+    "email": "elloar@gmail.com",
+    "password": "123456",
+    "age": 17,
+    "city": "Maceió"
+  },
+  {
+    "id": "1746209087800",
+    "name": "Elloar",
+    "email": "elloa@gmail.com",
+    "password": "123456",
+    "age": 17,
+    "city": "Maceió"
+  },
+  {
+    "id": "1746209200121",
+    "name": "Elloar",
+    "email": "teixeira@gmail.com",
+    "password": "123456",
+    "age": 17,
+    "city": "Maceió"
+  },
+  {
+    "id": "1746210528709",
+    "name": "Elloar",
+    "email": "nunes@gmail.com",
+    "password": "123456",
+    "age": 17,
+    "city": "Maceió"
+  },
+  {
+    "id": "1746636974030",
+    "name": "Ananda",
+    "email": "ananda@gmail.com",
+    "password": "15324",
+    "age": 17,
+    "city": "União dos Palmares"
+  },
+  {
+    "id": "1746638961427",
+    "name": "Ananda",
+    "email": "ananda@gmail.com",
+    "password": "15324",
+    "age": 17,
+    "city": "União dos Palmares"
+  },
+  {
+    "id": "1746641043983",
+    "name": "Elloar",
+    "email": "nunes@gmail.com",
+    "password": "123456",
+    "age": 17,
+    "city": "Maceió"
+  }
+]
