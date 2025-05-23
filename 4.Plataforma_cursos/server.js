@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express from "express"
 import cors from "cors"
 import {promises as fs} from "node:fs"
 
@@ -16,31 +16,63 @@ app.use(
 )
 
 
-app.get("/instrutores", async (response, request) => {
+app.get("/instrutores", async (request, response) => {
 
     try{
         const data = await fs.readFile(DATA_BASE, "utf-8")
         const dataBase = await JSON.parse(data)
-
-    
         const instrutor = dataBase.usuarios.filter((u) => u.tipo === "instrutor")
 
-        console.log(instrutor)
         if(!instrutor){
             response.status(404).json({menssage: "Instrutores não encontrados"})
-            return
+            return;
         }
 
-        response.status(200).json(instrutor)
+      response.status(200).json(instrutor)
     } catch(error){
         console.log(error)
         response.status(500).json({menssage:"Internal server error"})
         
     }
 })
-// app.get("/cursos/com-muitos-comentario?min=3",  async(response, request) => {})
+app.get("/cursos/com-muitos-comentario",  async(request, response) => {
+    const {min} = request.query
+    try{
+        const data = await fs.readFile(DATA_BASE, "utf-8")
+        const dataBase = await JSON.parse(data)
+        const cursos = dataBase.cursos.filter((curso) => curso.comentarios.length> min)
+        if(!cursos){
+            response.status(400).json({menssage:"Comentários não encontrados"})
+            return
+        }
+console.log(cursos)
+        response.status(200).json(cursos)
+    } catch(error) {
+        console.log(error)
+        response.status(500).json({menssage:"Internal server error"})
+    }
+})
 // app.get("/usuarios/:id/cursos ",  async (response, request) => {})
-// app.get("/usuarios/com-progresso-acima?min=80", async (response, request) => {})
+app.get("/usuarios/com-progresso-acima", async (request, response) => {
+    const {min} = request.query
+
+    try{
+
+        const data = await fs.readFile(DATA_BASE, "utf-8")
+        const dt = await JSON.parse(data)
+        const progresso = dt.usuarios.filter((progresso) => progresso.progresso > min)
+
+        if(!progresso){
+            response.status(400).json({menssage:"Progresso não encontrado"})
+            return
+        }
+        console.log(progresso)
+        response.status(200).json(progresso)
+
+    }catch(error){
+        console.log(error) 
+        response.status(500).json({menssage:"Internal Server Error"})}
+})
 // app.get("/usuarios/:id/comentarios ", async (response, request) => {})
 // app.get("/cursos/:id/media-progresso", async (response, request) => {})
 // app.get("/cursos/:id/media-nota ", async (response, request) => {})

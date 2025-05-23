@@ -1,8 +1,8 @@
 # 🧠 Consultas e Filtragens
-GET /instrutores
+GET /instrutores  XXX
 → Retorna todos os usuários do tipo "instrutor".
 
-GET /cursos/com-muitos-comentarios?min=3   
+GET /cursos/com-muitos-comentarios?min=3   XXX
 → Retorna cursos com mais de 3 comentários.
 
 GET /usuarios/:id/cursos   
